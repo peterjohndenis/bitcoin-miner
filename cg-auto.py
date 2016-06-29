@@ -33,7 +33,8 @@ while True
 			time.sleep(seconds)
 		
 	#run cg-miner
-	#stop_sleep.sh
+	#subprocess.call("./stop-sleep.sh")
+	time.sleep(2)
 	subprocess.call("./run-cgminer.sh")
 
 	flag = True
@@ -46,4 +47,5 @@ while True
 
 	#stop cg-miner
 	subprocess.call("./stop-cgminer.sh")
-	#start_sleep.sh
+	time.sleep(2)
+	#subprocess.call("./start-sleep.sh")
