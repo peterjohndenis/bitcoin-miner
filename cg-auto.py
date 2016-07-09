@@ -1,4 +1,10 @@
-import subprocess, time, json, MySQLdb
+import subprocess, time, json, MySQLdb, datetime
+import RPi.GPIO as GPIO
+
+GPIO.setmode(GPIO.BOARD)
+GPIO.setup(7, GPIO.OUT)
+GPIO.output(7, False)
+subprocess.call(["sudo", "./sleep.sh"])
 
 with open('./mysql_config.json') as config_file:
     conf = json.load(config_file)
@@ -23,23 +29,26 @@ subprocess.call(["screen", "-t", "cgminer"])
 minutes = 15
 seconds = minutes * 60 
 
-while True
+while True:
 	flag = True
 	while flag:
 		voltValue = conn_fetch()
+		#print datetime.datetime.now().time(), " ", voltValue
 		if voltValue >= 13.5:
 			flag = False
 		else:
 			time.sleep(seconds)
 		
 	#run cg-miner
-	#subprocess.call("./stop-sleep.sh")
-	time.sleep(2)
+	subprocess.call(["sudo", "./wakeup.sh"])
+	GPIO.output(7, True)
+	time.sleep(5)
 	subprocess.call("./run-cgminer.sh")
 
 	flag = True
 	while flag:
 		voltValue = conn_fetch()
+		#print datetime.datetime.now().time(), " ", voltValue
 		if voltValue <= 12.0:
 		        flag = False
 		else:
@@ -47,5 +56,6 @@ while True
 
 	#stop cg-miner
 	subprocess.call("./stop-cgminer.sh")
-	time.sleep(2)
-	#subprocess.call("./start-sleep.sh")
+	time.sleep(5)
+	GPIO.output(7, False)
+	subprocess.call(["sudo", "./sleep.sh"])
