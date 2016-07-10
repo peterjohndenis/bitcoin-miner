@@ -33,22 +33,23 @@ while True:
 	flag = True
 	while flag:
 		voltValue = conn_fetch()
-		#print datetime.datetime.now().time(), " ", voltValue
-		if voltValue >= 13.5:
+		print datetime.datetime.now().time(), " ", voltValue
+		if voltValue >= 13.4:
 			flag = False
 		else:
 			time.sleep(seconds)
 		
 	#run cg-miner
 	subprocess.call(["sudo", "./wakeup.sh"])
+	time.sleep(10)
 	GPIO.output(7, True)
-	time.sleep(5)
+	time.sleep(1)
 	subprocess.call("./run-cgminer.sh")
 
 	flag = True
 	while flag:
 		voltValue = conn_fetch()
-		#print datetime.datetime.now().time(), " ", voltValue
+		print datetime.datetime.now().time(), " ", voltValue
 		if voltValue <= 12.0:
 		        flag = False
 		else:
