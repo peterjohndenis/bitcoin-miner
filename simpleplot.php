@@ -1,6 +1,6 @@
 <?php
-//require 'phplot.php';
-//$plot = new PHPlot();
+require 'phplot.php';
+$plot = new PHPlot();
 
 $config = json_decode(file_get_contents('mysql_config.json'), true);
 
@@ -22,14 +22,19 @@ $sql = "SELECT * FROM sensor_data LIMIT 10";
 $result = $conn->query($sql);
 
 
-if ($result->num_rows > 0) {
-    print_r($result->fetch_assoc());
-    print_r($result->fetch_assoc());
-    // output data of each row
-    //while($row = $result->fetch_assoc()) {
-    //    echo "id: " . $row["id"]. " - Name: " . $row["firstname"]. " " . $row["lastname"]. "<br>";
-    //}
-} else {
+if ($result->num_rows > 0) 
+{
+    $data = array();
+    //store data of each row
+    $i = 0;
+    while($row = $result->fetch_assoc()) 
+    {
+		$data[] = array('', strtotime($row['datetime']), $row['voltage']);
+    }
+    //print_r($data);
+} 
+else 
+{
     echo "0 results";
 }
 
@@ -37,8 +42,9 @@ if ($result->num_rows > 0) {
 
 $conn->close();
 
-/*$data = array(array('', 0, 0), array('', 1, 9));
+//$data = array(array('', 0, 0), array('', 1, 9));
 $plot->SetDataValues($data);
 $plot->SetDataType('data-data');
+$plot->SetXLabelType('time', '%H:%M');
 $plot->DrawGraph();
-*/
+
