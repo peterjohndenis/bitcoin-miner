@@ -52,7 +52,7 @@ while True:
 	# write data to mysql
 	params = [temp_C, volts, time.mktime(time.localtime())] #datetime.datetime.now()
 	try:
-		cur.execute("INSERT INTO sensor_data (temp, voltage, localtime) VALUES (%s, %s, %s)", params)
+		cur.execute("INSERT INTO sensor_data (temp, voltage, time) VALUES (%s, %s, %s)", params)
 	except MySQLdb.Error, e:
 		try:
 			print "MySQL Error [%d]: %s" % (e.args[0], e.args[1])
