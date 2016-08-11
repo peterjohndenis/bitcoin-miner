@@ -1,14 +1,14 @@
 <html>
 	<head>
-		<title>Hello, PHPlot!</title>
+		<title>Voltage plot</title>
 	</head>
 	<body>
-		<h1>PHPlot Test</h1>
+		<h1>Voltage</h1>
 		<form action="process.php">
-			<input type="datetime-local" name="start">
-			<input type="datetime-local" name="end">
+			<label for="start">Start date </label><input type="datetime-local" id="start" name="start">
+			<label for="end">End date </label><input type="datetime-local" id="end" name="end">
 			<input type="submit" value="Send">
 		</form>
-		<img src="simpleplot.php">
+		<img src="plot.php">
 	</body>
 </html>
