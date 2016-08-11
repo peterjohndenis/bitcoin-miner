@@ -2,7 +2,7 @@ import MySQLdb
 import json
 import time
 import readadc
-import datetime
+#import datetime
 
 with open('./mysql_config.json') as config_file:
     conf = json.load(config_file)
@@ -50,9 +50,9 @@ while True:
 	cur = db.cursor()
 		
 	# write data to mysql
-	params = [temp_C, volts, datetime.datetime.now()]
+	params = [temp_C, volts, time.mktime(time.localtime())] #datetime.datetime.now()
 	try:
-		cur.execute("INSERT INTO sensor_data (temp, voltage, datetime) VALUES (%s, %s, %s)", params)
+		cur.execute("INSERT INTO sensor_data (temp, voltage, time) VALUES (%s, %s, %s)", params)
 	except MySQLdb.Error, e:
 		try:
 			print "MySQL Error [%d]: %s" % (e.args[0], e.args[1])

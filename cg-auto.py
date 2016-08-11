@@ -33,8 +33,8 @@ while True:
 	flag = True
 	while flag:
 		voltValue = conn_fetch()
-		print datetime.datetime.now().time(), " ", voltValue
-		if voltValue >= 13.4:
+		#print datetime.datetime.now().time(), " ", voltValue
+		if voltValue >= 13.5:
 			flag = False
 		else:
 			time.sleep(seconds)
@@ -49,8 +49,8 @@ while True:
 	flag = True
 	while flag:
 		voltValue = conn_fetch()
-		print datetime.datetime.now().time(), " ", voltValue
-		if voltValue <= 12.0:
+		#print datetime.datetime.now().time(), " ", voltValue
+		if voltValue <= 11.8:
 		        flag = False
 		else:
 		        time.sleep(seconds)
