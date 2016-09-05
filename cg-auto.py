@@ -18,7 +18,7 @@ def conn_fetch():
 	# create cursor-object
 	cur = db.cursor()
 	# execute query and fetch
-	cur.execute("SELECT voltage FROM sensor_data ORDER BY id DESC LIMIT 1")
+	cur.execute("SELECT voltage FROM sensor_data ORDER BY id DESC LIMIT 2")
 	values = cur.fetchall()
 	# close connection to database
 	cur.close()
@@ -34,7 +34,7 @@ while True:
 	while flag:
 		voltValues = conn_fetch()
 		#print datetime.datetime.now().time(), " ", voltValue
-		if voltValues[0][0] >= 13.5 && voltValues[1][0] >= 13.5:
+		if voltValues[0][0] >= 13.5 and voltValues[1][0] >= 13.5:
 			flag = False
 		else:
 			time.sleep(seconds)
