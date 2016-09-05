@@ -19,11 +19,11 @@ def conn_fetch():
 	cur = db.cursor()
 	# execute query and fetch
 	cur.execute("SELECT voltage FROM sensor_data ORDER BY id DESC LIMIT 1")
-	value = cur.fetchone()[0]
+	values = cur.fetchall()
 	# close connection to database
 	cur.close()
 	db.close()
-	return value
+	return values
 
 subprocess.call(["screen", "-t", "cgminer"])
 minutes = 15
@@ -32,9 +32,9 @@ seconds = minutes * 60
 while True:
 	flag = True
 	while flag:
-		voltValue = conn_fetch()
+		voltValues = conn_fetch()
 		#print datetime.datetime.now().time(), " ", voltValue
-		if voltValue >= 13.5:
+		if voltValues[0][0] >= 13.5 && voltValues[1][0] >= 13.5:
 			flag = False
 		else:
 			time.sleep(seconds)
@@ -50,7 +50,7 @@ while True:
 	while flag:
 		voltValue = conn_fetch()
 		#print datetime.datetime.now().time(), " ", voltValue
-		if voltValue <= 11.8:
+		if voltValue <= 11.7:
 		        flag = False
 		else:
 		        time.sleep(seconds)
