@@ -19,7 +19,7 @@ def conn_fetch():
 	# create cursor-object
 	cur = db.cursor()
 	# execute query and fetch
-	cur.execute("SELECT voltage FROM sensor_data ORDER BY id DESC LIMIT 2")
+	cur.execute("SELECT voltage FROM sensor_data ORDER BY id DESC LIMIT 1")
 	result = cur.fetchall()
 	# close connection to database
 	cur.close()
@@ -32,12 +32,12 @@ seconds = minutes * 60
 
 while True:
 	enoughVolt = False
-	while !enoughVolt:
+	while not enoughVolt:
 		rows = conn_fetch()
 		for row in rows:
 			if row[0] >= 13.5:
 				enoughVolt = True
-		if !enoughVolt:
+		if not enoughVolt:
 			time.sleep(seconds)
 		
 	#run cg-miner
@@ -48,12 +48,12 @@ while True:
 	subprocess.call("./run-cgminer.sh")
 
 	insufficientVolt = False
-	while !insufficientVolt: 
+	while not insufficientVolt: 
 		rows = conn_fetch()
 		for row in rows:
 			if row[0] < 11.7:
 				insufficientVolt = True
-		if !insufficientVolt:
+		if not insufficientVolt:
 			time.sleep(seconds)
 
 	#stop cg-miner
