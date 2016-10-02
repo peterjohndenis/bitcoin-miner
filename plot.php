@@ -5,7 +5,7 @@ $config = json_decode(file_get_contents('/var/www/mysql_config.json'), true);
 $server = $config['host'];
 $username = $config['login'];
 $password = $config['passwd'];
-$database = $config['database'];
+$database = $config['database_miner'];
 
 $start = isset($_SESSION['start']) ? $_SESSION['start'] : (time() - (60*60*24*2));
 $end = isset($_SESSION['end']) ? $_SESSION['end'] : time();
