@@ -7,9 +7,9 @@ import readadc
 with open('./mysql_config.json') as config_file:
     conf = json.load(config_file)
 
-# Sensors connected to channel 0 and 1 of mcp3008
+# Sensors connected to channel 0 and 4 of mcp3008
 temp_sensor_pin = 0
-volt_sensor_pin = 1
+volt_sensor_pin = 4
 readadc.initialize()
 
 
