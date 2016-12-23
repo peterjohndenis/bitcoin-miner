@@ -1,6 +1,7 @@
 import subprocess, time, json, MySQLdb, datetime
 import RPi.GPIO as GPIO
 
+GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BOARD)
 GPIO.setup(7, GPIO.OUT)
 GPIO.output(7, False)
@@ -19,24 +20,24 @@ def conn_fetch():
 	cur = db.cursor()
 	# execute query and fetch
 	cur.execute("SELECT voltage FROM sensor_data ORDER BY id DESC LIMIT 1")
-	value = cur.fetchone()[0]
+	result = cur.fetchall()
 	# close connection to database
 	cur.close()
 	db.close()
-	return value
+	return result
 
 subprocess.call(["screen", "-t", "cgminer"])
 minutes = 15
 seconds = minutes * 60 
 
 while True:
-	flag = True
-	while flag:
-		voltValue = conn_fetch()
-		#print datetime.datetime.now().time(), " ", voltValue
-		if voltValue >= 13.5:
-			flag = False
-		else:
+	enoughVolt = False
+	while not enoughVolt:
+		rows = conn_fetch()
+		for row in rows:
+			if row[0] >= 13.5:
+				enoughVolt = True
+		if not enoughVolt:
 			time.sleep(seconds)
 		
 	#run cg-miner
@@ -46,14 +47,14 @@ while True:
 	time.sleep(1)
 	subprocess.call("./run-cgminer.sh")
 
-	flag = True
-	while flag:
-		voltValue = conn_fetch()
-		#print datetime.datetime.now().time(), " ", voltValue
-		if voltValue <= 11.8:
-		        flag = False
-		else:
-		        time.sleep(seconds)
+	insufficientVolt = False
+	while not insufficientVolt: 
+		rows = conn_fetch()
+		for row in rows:
+			if row[0] < 11.7:
+				insufficientVolt = True
+		if not insufficientVolt:
+			time.sleep(seconds)
 
 	#stop cg-miner
 	subprocess.call("./stop-cgminer.sh")
