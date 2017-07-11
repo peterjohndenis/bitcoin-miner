@@ -4,7 +4,7 @@ import time
 import readadc
 #import datetime
 
-with open('./mysql_config.json') as config_file:
+with open('/home/pi/workspace/bitcoin-miner/mysql_config.json') as config_file:
     conf = json.load(config_file)
 
 # Sensors connected to channel 0 and 4 of mcp3008
